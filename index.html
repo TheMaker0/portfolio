@@ -131,6 +131,14 @@
       font-size: 1.05rem; color: var(--mid); max-width: 480px;
       margin-bottom: 2.5rem; line-height: 1.7;
     }
+    .hero-sub a {
+      color: inherit;
+      font-weight: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .hero-sub a:hover { color: var(--accent); text-decoration: underline; }
+    .hero-sub a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .hero-actions {
       display: flex; flex-wrap: wrap; gap: 0.75rem;
       margin-top: 1.5rem;
@@ -687,9 +695,9 @@
   <div class="hero-content">
     <p class="hero-tag">// available for work</p>
     <h1>Hi, I'm Mark Glenn.<br>I am Software / Web developer.</h1>
-    <p class="hero-sub">Full-stack developer with a focus on clean code, fast interfaces, and things that actually work.</p>
+    <p class="hero-sub">Full-stack developer with a focus on clean code, fast interfaces, and things that <a href="work.html">actually work</a>.</p>
     <div class="hero-actions">
-      <a class="hero-cta hero-cta--dark" href="#projects">
+      <a class="hero-cta hero-cta--dark" href="work.html">
         See my work
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 8h10M9 4l4 4-4 4"/>
