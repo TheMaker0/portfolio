@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — DARTS | Mark Glenn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #ffffff;
+      --off: #f7f7f5;
+      --ink: #111111;
+      --mid: #555555;
+      --faint: #e4e4e0;
+      --accent: #2563eb;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at top left, rgba(17, 17, 17, 0.04), transparent 28%),
+        linear-gradient(180deg, #fcfcfb 0%, #f4f2ed 100%);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 60px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--faint);
+    }
+    .nav-logo {
+      font-family: var(--mono); font-size: 0.85rem; font-weight: 500;
+      color: var(--ink); text-decoration: none; letter-spacing: -0.02em;
+    }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500; color: var(--mid);
+      text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .theme-switch {
+      background: transparent; color: var(--ink);
+      border: 1px solid var(--faint); border-radius: 999px;
+      width: 42px; height: 42px; padding: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1rem; cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .theme-switch:hover { background: var(--off); }
+    .theme-switch .theme-icon { display: inline-flex; align-items: center; justify-content: center; }
+    [data-theme="dark"] {
+      --white: #101010;
+      --off: #171717;
+      --ink: #f4f4f5;
+      --mid: #c2c2c2;
+      --faint: #2d2d2d;
+      --accent: #38bdf8;
+    }
+    [data-theme="dark"] nav { background: rgba(17,17,17,0.92); border-color: var(--faint); }
+    [data-theme="dark"] .panel { background: rgba(17,17,17,0.92); border-color: rgba(255,255,255,0.08); }
+    [data-theme="dark"] .panel h3, [data-theme="dark"] .panel p, [data-theme="dark"] .panel span { color: var(--white); }
+    .page-wrap {
+      max-width: 1180px; margin: 0 auto; padding: 100px 2rem 4rem;
+    }
+    .hero {
+      margin-bottom: 1.25rem;
+    }
+    .hero-card {
+      position: relative;
+      padding: 2.4rem;
+      border: 1px solid rgba(17, 17, 17, 0.06);
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(247,247,245,0.96));
+      box-shadow: 0 30px 90px rgba(15, 23, 42, 0.06);
+      overflow: hidden;
+    }
+    .hero-card::after {
+      content: '';
+      position: absolute; right: -4%; bottom: -22%; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(17, 17, 17, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      font-family: var(--mono); font-size: 0.78rem; color: var(--ink);
+      letter-spacing: 0.12em; margin-bottom: 1.15rem; text-transform: uppercase;
+      opacity: 0.8;
+    }
+    h1 {
+      font-size: clamp(2.3rem, 5vw, 3.4rem); font-weight: 600;
+      line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 1rem;
+      max-width: 780px;
+    }
+    p.lead {
+      font-size: 1.03rem; color: var(--mid); max-width: 700px;
+      margin-bottom: 1.6rem; line-height: 1.8;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      margin-top: 1.2rem;
+    }
+    .button {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      text-decoration: none; padding: 0.8rem 1.45rem;
+      font-size: 0.84rem; font-weight: 600; letter-spacing: 0.04em;
+      border-radius: 999px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      border: 1px solid transparent;
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button-primary {
+      background: var(--ink); color: var(--white); border-color: var(--ink);
+      box-shadow: 0 12px 30px rgba(17, 17, 17, 0.12);
+    }
+    .button-secondary {
+      background: var(--white); color: var(--ink); border-color: var(--faint);
+    }
+    .section { margin-top: 2.2rem; padding: 0; }
+    .section-head {
+      display: flex; align-items: end; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1rem;
+    }
+    .section-label {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--ink);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem;
+      opacity: 0.8;
+    }
+    h2 { font-size: 1.6rem; font-weight: 600; margin-bottom: 0; }
+    .panel {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(17,17,17,0.06);
+      border-radius: 28px;
+      padding: 1.6rem;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.05);
+      backdrop-filter: blur(10px);
+    }
+    .spotlight-card {
+      display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 1.5rem; align-items: start;
+    }
+    .project-summary p { color: var(--mid); line-height: 1.85; }
+    .project-meta {
+      display: grid; gap: 1rem;
+      margin-top: 0;
+    }
+    .project-meta h3 {
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink); margin-bottom: 0.7rem;
+    }
+    .project-meta p, .project-meta ul { color: var(--mid); }
+    .project-meta ul { list-style: none; padding-left: 0; display: grid; gap: 0.75rem; }
+    .project-meta li {
+      padding: 0.9rem 1rem; background: rgba(247,247,245,0.9);
+      border: 1px solid var(--faint); border-radius: 14px;
+    }
+    .stack-list {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+    .stack-pill {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--ink); background: rgba(255,255,255,0.88);
+      border: 1px solid var(--faint); padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+    }
+    .project-image {
+      width: 100%; border-radius: 24px; overflow: hidden;
+      background: var(--off); border: 1px solid var(--faint);
+      margin-top: 1.2rem;
+      aspect-ratio: 16 / 10;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .project-image img { width: 100%; height: 100%; display: block; object-fit: cover; }
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 0.9rem; margin-top: 1.3rem;
+    }
+    .feature-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(247,247,245,0.95));
+      border: 1px solid var(--faint); border-radius: 18px; padding: 1rem 1.1rem;
+      min-height: 116px;
+    }
+    .feature-card strong { display: block; margin-bottom: 0.45rem; font-size: 0.95rem; }
+    .project-album {
+      margin-top: 2.5rem;
+    }
+    .project-album-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1rem;
+    }
+    .project-card {
+      position: relative;
+      min-height: 320px;
+      border-radius: 24px;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      display: flex;
+      align-items: flex-end;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.7));
+      transition: opacity 0.25s ease;
+    }
+    .project-card:hover,
+    .project-card.active {
+      transform: translateY(-3px);
+      box-shadow: 0 34px 75px rgba(15, 23, 42, 0.14);
+      border-color: rgba(17, 17, 17, 0.16);
+    }
+    .project-card-content {
+      position: relative;
+      z-index: 1;
+      padding: 1.4rem;
+      color: var(--white);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .project-card h3 {
+      font-size: 1.02rem;
+      line-height: 1.25;
+      margin: 0;
+      color: var(--white);
+    }
+    .project-card p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      max-height: 5rem;
+      overflow: hidden;
+    }
+    .project-card .project-card-stack {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+    }
+    .project-card .stack-pill {
+      padding: 0.35rem 0.72rem; font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+    }
+    .contact-card {
+      margin-top: 1.2rem; padding: 1.4rem; background: rgba(247,247,245,0.9);
+      border: 1px solid var(--faint); border-radius: 18px;
+    }
+    footer {
+      margin-top: 3rem; padding: 2rem 0; text-align: center;
+      font-size: 0.82rem; color: var(--mid); font-family: var(--mono);
+    }
+    @media (max-width: 760px) {
+      nav { padding: 0 1.25rem; }
+      .page-wrap { padding: 100px 1.25rem 3rem; }
+      .spotlight-card { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .project-meta { margin-top: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav aria-label="Primary navigation">
+    <a class="nav-logo" href="index.html">Air.dev</a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#skills">Skills</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <button class="theme-switch" id="theme-switch" type="button" aria-label="Switch to dark mode">
+      <span class="theme-icon" aria-hidden="true">🌙</span>
+    </button>
+  </nav>
+  <main class="page-wrap">
+    <section class="hero">
+      <div class="hero-card">
+        <p class="hero-tag">Selected work</p>
+        <h1>Curated projects with a refined, editorial presentation.</h1>
+        <p class="lead">A polished showcase of the systems and interfaces I’ve built, structured as a clean portfolio album rather than a traditional page.</p>
+        <div class="hero-actions">
+          <a class="button button-secondary" href="index.html">Back to home</a>
+          <a class="button button-primary" href="#details">Explore project</a>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="details">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Featured project</div>
+          <h2>Project overview</h2>
+        </div>
+      </div>
+      <div class="panel spotlight-card">
+        <div>
+          <p>The DARTS system is a web-based platform built to help farmers in Tarlac City identify and assess rice crop diseases using modern technology. It combines a user-friendly dashboard, a disease recognition workflow, and reporting tools so agricultural teams can monitor crop health with confidence.</p>
+          <div class="feature-grid">
+            <div class="feature-card"><strong>Outcome</strong> Reduced disease identification time and improved decision-making for local farmers.</div>
+            <div class="feature-card"><strong>Users</strong> Farmers, agronomists, and local agriculture officers.</div>
+            <div class="feature-card"><strong>Tech</strong> Python backend, responsive UI, and data-driven disease profiles.</div>
+            <div class="feature-card"><strong>Role</strong> Full-stack implementation, UI design, and deployment support.</div>
+          </div>
+        </div>
+        <div class="project-meta">
+          <div>
+            <h3>Project details</h3>
+            <ul id="detail-features">
+              <li>Responsive admin dashboard experience</li>
+              <li>Record management and disease reporting</li>
+              <li>Integrated MySQL data store</li>
+              <li>Modern interface with accessible typography</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Technology stack</h3>
+            <div class="stack-list" id="detail-stack">
+              <span class="stack-pill">Python</span>
+              <span class="stack-pill">JavaScript</span>
+              <span class="stack-pill">HTML</span>
+              <span class="stack-pill">CSS</span>
+              <span class="stack-pill">MySQL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="project-image">
+        <img id="detail-image" src="img/darts.png" alt="DARTS screenshot" loading="lazy" />
+      </div>
+    </section>
+    <section class="section project-album">
+      <div class="section-label">Album</div>
+      <h2>Other featured projects</h2>
+      <div class="project-album-grid" id="project-album-grid"></div>
+    </section>
+    <section class="section">
+      <div class="section-label">Contact</div>
+      <h2>Need a similar solution?</h2>
+      <div class="contact-card">
+        <p>If you'd like a custom web application built with the same polished interface and practical workflows, send a message and let's discuss the next project.</p>
+        <p><strong>Email:</strong> <a href="mailto:Mark@dentair.shop">Mark@dentair.shop</a></p>
+      </div>
+    </section>
+  </main>
+  <footer>© 2026 Mark Glenn · Built with care</footer>
+  <script>
+    const themeSwitch = document.getElementById('theme-switch');
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const themeIcons = { light: '🌞', dark: '🌙' };
+    function setTheme(theme) {
+      document.body.dataset.theme = theme;
+      const next = theme === 'dark' ? 'Light mode' : 'Dark mode';
+      const icon = themeIcons[theme] || '🌙';
+      const iconElement = themeSwitch.querySelector('.theme-icon');
+      if (iconElement) iconElement.textContent = icon;
+      themeSwitch.setAttribute('aria-label', `Switch to ${next.toLowerCase()}`);
+      localStorage.setItem('theme', theme);
+    }
+    if (themeSwitch) {
+      themeSwitch.addEventListener('click', () => {
+        setTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
+      });
+    }
+    setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+
+    const PROJECTS = [
+      {
+        id: 'darts',
+        title: 'DARTS — Disease Assessment & Recognition System',
+        summary: 'A web-based platform built to help farmers in Tarlac City identify and assess rice crop diseases using modern technology.',
+        details: [
+          'Responsive admin dashboard experience',
+          'Record management and disease reporting',
+          'Integrated MySQL data store',
+          'Modern interface with accessible typography'
+        ],
+        features: [
+          { label: 'Outcome', value: 'Reduced disease identification time and improved decision-making for local farmers.' },
+          { label: 'Users', value: 'Farmers, agronomists, and local agriculture officers.' },
+          { label: 'Tech', value: 'Python backend, responsive UI, and data-driven disease profiles.' },
+          { label: 'Role', value: 'Full-stack implementation, UI design, and deployment support.' }
+        ],
+        stack: ['Python', 'JavaScript', 'HTML', 'CSS', 'MySQL'],
+        image: 'img/darts.png',
+        description: 'The DARTS system is a web-based platform built to help farmers in Tarlac City identify and assess rice crop diseases using modern technology. It combines a user-friendly dashboard, a disease recognition workflow, and reporting tools so agricultural teams can monitor crop health with confidence.'
+      },
+      {
+        id: 'swiftpass',
+        title: 'Swift Pass — E-Wallet Management System',
+        summary: 'A web-based system designed to manage an e-wallet platform for students and drivers with real-time balance tracking and role-based account control.',
+        details: [
+          'Admin dashboard for balanced platform insights',
+          'Role-based access for students and drivers',
+          'Payment tracking and wallet management',
+          'Secure account controls and history views'
+        ],
+        features: [
+          { label: 'Outcome', value: 'More efficient payment handling and better user transparency.' },
+          { label: 'Users', value: 'Students, drivers, and administrators.' },
+          { label: 'Tech', value: 'Python backend, Tailwind UI, and responsive design.' },
+          { label: 'Role', value: 'Full-stack development and dashboard UX.' }
+        ],
+        stack: ['Python', 'Tailwind', 'HTML', 'CSS', 'MySQL'],
+        image: 'img/swiftpass.png',
+        description: 'Swift Pass is a web-based e-wallet management platform built for students and drivers. It offers easy balance tracking, role-based permissions, and admin tools to oversee transactions and user accounts.'
+      },
+      {
+        id: 'eimis',
+        title: 'Eimis Demo',
+        summary: 'A demo web system built to showcase interactive UI and workflow design for modern internal tools.',
+        details: [
+          'Interactive web dashboard experience',
+          'Clean layout for internal users',
+          'Quick navigation between features',
+          'Lightweight, responsive frontend build'
+        ],
+        features: [
+          { label: 'Outcome', value: 'A strong demo presence for internal tool concepts.' },
+          { label: 'Users', value: 'Product teams and internal stakeholders.' },
+          { label: 'Tech', value: 'HTML, CSS, JavaScript.' },
+          { label: 'Role', value: 'Frontend design and feature demo creation.' }
+        ],
+        stack: ['HTML', 'CSS', 'JavaScript'],
+        image: 'img/eimis.png',
+        description: 'Eimis Demo is a clean, interactive web application prototype designed to highlight workflows and UI patterns for internal tool development.'
+      }
+    ];
+
+    const heroTag = document.querySelector('.hero-tag');
+    const heroTitle = document.querySelector('.hero h1');
+    const heroLead = document.querySelector('.hero .lead');
+    const detailFeatures = document.getElementById('detail-features');
+    const detailStack = document.getElementById('detail-stack');
+    const detailImage = document.getElementById('detail-image');
+    const albumGrid = document.getElementById('project-album-grid');
+
+    function updateProject(projectId) {
+      const project = PROJECTS.find(p => p.id === projectId);
+      if (!project) return;
+      heroTag.textContent = 'Project detail';
+      heroTitle.textContent = project.title;
+      heroLead.textContent = project.description;
+      detailFeatures.innerHTML = project.details.map(item => `<li>${item}</li>`).join('');
+      detailStack.innerHTML = project.stack.map(item => `<span class="stack-pill">${item}</span>`).join('');
+      detailImage.src = project.image;
+      detailImage.alt = `${project.title} screenshot`;
+      albumGrid.querySelectorAll('.project-card').forEach(card => {
+        card.classList.toggle('active', card.dataset.id === projectId);
+      });
+    }
+
+    function renderAlbum() {
+      albumGrid.innerHTML = PROJECTS.map(project => `
+        <article class="project-card" data-id="${project.id}" style="background-image: url('${project.image}');">
+          <div class="project-card-content">
+            <h3>${project.title}</h3>
+            <p>${project.summary}</p>
+            <div class="project-card-stack">
+              ${project.stack.slice(0, 3).map(item => `<span class="stack-pill">${item}</span>`).join('')}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      albumGrid.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('click', () => {
+          updateProject(card.dataset.id);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      });
+    }
+
+    renderAlbum();
+    updateProject('darts');
+  </script>
+</body>
+</html>
