@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f6f8f6" />
+  <title>Swift Pass — Wallet Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f6f8f6;
+      --ink: #17221e;
+      --muted: #65726c;
+      --line: #dce5df;
+      --green: #078a67;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .topbar {
+      min-height: 64px;
+      padding: 0 6vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.82);
+    }
+    .brand, .back-link {
+      font-family: var(--mono);
+      font-size: .82rem;
+      text-decoration: none;
+    }
+    .brand { font-weight: 500; }
+    .back-link { color: var(--muted); transition: color .2s; }
+    .back-link:hover { color: var(--green); }
+    main { width: min(1060px, calc(100% - 40px)); margin: 0 auto; }
+    .intro { padding: clamp(4rem, 10vw, 7rem) 0 3.5rem; }
+    .eyebrow {
+      margin: 0 0 1rem;
+      color: var(--green);
+      font: .72rem var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 720px;
+      margin: 0;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      line-height: 1.04;
+      font-weight: 600;
+    }
+    .intro-copy {
+      max-width: 540px;
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    .project { padding: 2.5rem 0 4rem; border-top: 1px solid var(--line); }
+    .project-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .project-index { margin: 0 0 .6rem; color: var(--green); font: .7rem var(--mono); }
+    h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 1.8rem); font-weight: 600; }
+    .project-copy { max-width: 570px; margin: .65rem 0 0; color: var(--muted); line-height: 1.7; }
+    .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
+    .tags span {
+      padding: .35rem .6rem;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      color: #495951;
+      font: .66rem var(--mono);
+    }
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      align-items: start;
+    }
+    .screen {
+      display: block;
+      overflow: hidden;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(27, 54, 43, .07);
+    }
+    .screen img { display: block; width: 100%; height: auto; border-radius: 10px; }
+    .other-work { padding: 1rem 0 4rem; border-top: 1px solid var(--line); }
+    .other-work p { color: var(--muted); line-height: 1.7; }
+    footer {
+      padding: 1.5rem 20px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+      font: .7rem var(--mono);
+    }
+    @media (max-width: 700px) {
+      .topbar { padding: 0 20px; }
+      .screens { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+      .screen { padding: 5px; border-radius: 12px; }
+      .screen img { border-radius: 8px; }
+      .project-heading { display: block; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="wallet.css" />
+</head>
+<body>
+  <header class="sp-topbar">
+    <a class="sp-brand" href="index.html" aria-label="Back to Ark.dev portfolio"><span class="sp-brand-mark">S</span>Swift Pass</a>
+    <div class="sp-topbar-actions">
+      <span class="sp-demo-label"><span></span> DEMO WALLET</span>
+      <button class="sp-icon-button" id="reset-demo" type="button" aria-label="Reset demo data" title="Reset demo data">&#8635;</button>
+      <a class="sp-back-link" href="index.html">Portfolio <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </header>
+
+  <div class="sp-layout">
+    <aside class="sp-sidebar" aria-label="Wallet navigation">
+      <p class="sp-nav-caption">WALLET</p>
+      <nav class="sp-nav" id="main-navigation">
+        <button class="sp-nav-link is-active" type="button" data-view="home"><span aria-hidden="true">&#8962;</span> Home</button>
+        <button class="sp-nav-link" type="button" data-view="transactions"><span aria-hidden="true">&#9776;</span> Transactions</button>
+        <button class="sp-nav-link" type="button" data-view="goals"><span aria-hidden="true">&#9673;</span> Goals</button>
+        <button class="sp-nav-link" type="button" data-view="summary"><span aria-hidden="true">&#9638;</span> Summary</button>
+      </nav>
+      <div class="sp-sidebar-foot"><span class="sp-avatar">MG</span><span><strong>Mark Glenn</strong><small>Personal account</small></span></div>
+    </aside>
+
+    <main class="sp-main">
+      <div class="sp-page-heading">
+        <div><p class="sp-eyebrow" id="page-eyebrow">TUESDAY, OCTOBER 6</p><h1 id="page-title">Good morning, Mark</h1></div>
+        <label class="sp-date-button sp-date-picker"><span aria-hidden="true">&#128197;</span><input id="active-date" type="date" aria-label="Choose active wallet date" /></label>
+      </div>
+      <div id="app-content" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <nav class="sp-mobile-nav" id="mobile-navigation" aria-label="Wallet navigation">
+    <button class="sp-mobile-link is-active" type="button" data-view="home"><span aria-hidden="true">&#8962;</span>Home</button>
+    <button class="sp-mobile-link" type="button" data-view="transactions"><span aria-hidden="true">&#9776;</span>Today</button>
+    <button class="sp-mobile-link" type="button" data-view="goals"><span aria-hidden="true">&#9673;</span>Goals</button>
+    <button class="sp-mobile-link" type="button" data-view="summary"><span aria-hidden="true">&#9638;</span>Summary</button>
+  </nav>
+
+  <dialog class="sp-dialog" id="action-dialog" aria-labelledby="dialog-title"></dialog>
+  <div class="sp-toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="wallet.js"></script>
+</body>
+</html>
